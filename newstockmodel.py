@@ -6,14 +6,14 @@ from sklearn.preprocessing import MinMaxScaler
 from keras.models import Sequential
 from keras.layers import Dense,LSTM,Dropout
 
-data = pd.read_csv("/Users/kraj200/Downloads/AAPL44.csv")
+data = pd.read_csv("path to csv file for training") #put your path to the training csv data here.
 
 data["onlyindex"] = data.index
 
 data["AvgPerDay"] = (data["High"] + data["Low"]) / 2
 
-maxday = (data.loc[data.AvgPerDay == data.AvgPerDay.max(),["Date"]]) #["Date"][74]
-minday = (data.loc[data.AvgPerDay == data.AvgPerDay.min(),["Date"]]) #["Date"][171]
+maxday = (data.loc[data.AvgPerDay == data.AvgPerDay.max(),["Date"]])
+minday = (data.loc[data.AvgPerDay == data.AvgPerDay.min(),["Date"]])
 
 data["Close"]=pd.to_numeric(data.Close,errors='coerce')
 data = data.dropna()
@@ -52,8 +52,7 @@ model.compile(optimizer='adam',loss="mean_squared_error")
 
 hist = model.fit(X_train, y_train, epochs=10, batch_size = 32, verbose=2)
 
-#testData = pd.read_csv("/Users/kraj200/Downloads/AAPL44.csv")
-testData = pd.read_csv("/Users/kraj200/Downloads/Google_train_data.csv")
+testData = pd.read_csv("path to csv file for testing") #put your path to the testing csv data here.
 testData["Close"]=pd.to_numeric(testData.Close,errors='coerce')
 testData = testData.dropna()
 testData = testData.iloc[:,4:5]
@@ -95,6 +94,4 @@ prediction = model.predict(real_data)
 prediction = sc.inverse_transform(prediction)
 print(f"Prediction: {prediction}")
 
-#print(f"Predicted Price: {predicted_price}")
-
-# model.save("neural_net500epochs.h5")
+# model.save("neural_net#epochs.h5") ----> uncomment to save the model as an h5 file
